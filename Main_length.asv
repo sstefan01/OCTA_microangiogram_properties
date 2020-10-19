@@ -1,0 +1,28 @@
+full_l = cellfun(@(x)(size(x,1)),S);
+full_l = full_l*3; %to convert to um;
+full_uniq = unique(full_l);
+c = cool(length(full_uniq));
+
+[hl, nl] = histcounts(full_l, 2.5:5:200);
+hl = smooth(hl);
+
+figure; 
+subplot(1,2,1)
+hold on
+for i = 1:length(S)
+    ind = find(full_l(i) == full_uniq);
+    plot(S{i}(:,3), S{i}(:,2), 'linewidth', 1.5, 'color', c(ind,:))
+end
+axis image
+set(gca,'Color','k')
+set(gcf, 'InvertHardCopy', 'off');
+ax = gca;
+ax.YDir = 'reverse';
+colormap(c);
+
+title('Length')
+
+subplot(1,2,2)
+plot(nl(1:end-1), hl/trapz(hl), 'linewidth', 1.5)
+xlabel('Length (um)')
+ylabel('Probability')

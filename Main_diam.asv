@@ -1,0 +1,48 @@
+
+
+D = zeros(length(S),1);
+for i = 1:length(S)
+    D(i) = find_diam(S{i}, V);
+    if mod(i,100) == 0
+        disp([num2str(i) '/' num2str(length(S))])
+    end
+end
+
+D(isnan(D)) = nanmedian(D);
+D = D*3;
+%%
+d_uniq = unique(D);
+
+
+c = cool(length(d_uniq));
+
+[hd, nd] = histcounts(D(full_l>6), 3:50);
+hd = smooth(hd,5);
+
+figure;
+subplot(1,2,1)
+hold on
+for i = 1:length(S)
+    ind = find(D(i) == d_uniq);
+    plot(S{i}(:,3), S{i}(:,2), 'linewidth', 1.5, 'color', c(ind,:))
+end
+axis image
+set(gca,'Color','k')
+set(gcf, 'InvertHardCopy', 'off');
+ax = gca;
+ax.YDir = 'reverse';
+
+colormap(c);
+caxis([min(D) max(D)])
+h = colorbar;
+title('Length')
+colorbar
+title('Diameter')
+
+subplot(1,2,2)
+plot(nd(1:end-1), hd/trapz(hd), 'linewidth', 1.5)
+xlabel('Diameter')
+ylabel('Probability')
+
+
+

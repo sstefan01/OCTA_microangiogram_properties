@@ -1,0 +1,51 @@
+
+
+short_l = zeros(length(S),1);
+for i = 1:length(S)
+    b = [];
+    s = S{i};
+    e1 = s(1,:);
+    e2 = s(end,:);
+    b(e2(1), e2(2), e2(3)) = 1;
+    b(e1(1), e1(2), e1(3))= 0;
+    d = bwdist(b, 'chessboard');
+    short_l(i) = d(e1(1), e1(2), e1(3));
+    if mod(i,100) == 0
+        disp([num2str(i) '/' num2str(length(S))])
+    end
+end
+full_l = cellfun(@(x)(size(x,1)),S);
+tort = full_l./short_l;
+    
+tort_uniq = unique(tort);
+c = cool(length(tort_uniq));
+
+figure; 
+subplot(1,2,1)
+hold on
+for i = 1:length(S)
+    ind = find(tort(i) == tort_uniq);
+    plot(S{i}(:,3), S{i}(:,2), 'linewidth', 1.5, 'color', c(ind,:))
+end
+axis image
+set(gca,'Color','k')
+set(gcf, 'InvertHardCopy', 'off');
+ax = gca;
+ax.YDir = 'reverse';
+
+colormap(c);
+caxis([min(tort) max(tort)])
+h = colorbar;
+title('Length')
+colorbar
+title('Diameter')
+
+title('Tortuosity')
+
+subplot(1,2,2)
+[ht, nt] = histcounts(tort, 1:0.025:2.2);
+ht = smooth(ht);
+plot(nt(1:end-1), ht);
+xlabel('Tortuosity')
+ylabel('Probability')
+
