@@ -77,7 +77,7 @@ itt = 0;
                 dd = D.*(~nh_g);
                 
                ind = find(dd(:) == max(dd(:)));
-                [d1,d2, d3] = ind2sub(size(dv), ind(1));
+                [d1,d2, d3] = ind2sub(size(nh_g), ind(1));
                 d1 = m1+(d1-2);
                 d2 = n1+(d2-2);
                 d3 = v1+(d3-2);

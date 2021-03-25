@@ -1,14 +1,15 @@
-function S1 = clickT(S1,out,i,col,xx,yy, numtile)
-    
+function [S1, exit_flag] = clickT(S1,out,i,col,xx,yy, numtile)
   
     skel = seg2skel(S1, out);
+    
     mp = find_ep(skel, S1);
     ep = bwmorph3(skel, 'endpoints');
     [m,n,v] = ind2sub(size(skel),find(ep == 1));
     
     
     handles.figure = figure('Position',[100 100 500 500],'Units','Pixels', 'WindowKeyPressFcn',@pb_kpf);
-    
+    exit_flag = 0;
+    handles.exit_flag = 0;
     handles.axes1 = axes('Units','Pixels','Position',[60,100,400,300]);
     handles.i = i;
     handles.S1 = S1;
@@ -300,6 +301,8 @@ end
 
  function  pushbutton_exit(~, ~, ~)
     handles = guidata(gcf);
+    exit_flag = 1;
+    handles.exit_flag =1;
     close(gcf);
  end
 

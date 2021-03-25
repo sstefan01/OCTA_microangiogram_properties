@@ -1,3 +1,4 @@
+clear Ps;
 II(II==0) = median(II(:));
 
 II1 = imresize3(mat2gray(log(II)), [size(II,1), round(size(II,2)/fszx) round(size(II,3)/fszy)]);
@@ -53,8 +54,7 @@ for i = 1:length(Ps)
         p_pen = p(pd==max(pd));
         Pen(i) = p_pen(1);
     end
-    
 end
-
 Pen(Pen==0) = [];
+
 %%
